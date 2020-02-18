@@ -1,0 +1,279 @@
+use Libraries.Game.Game
+use Libraries.Game.Graphics.Drawable
+use Libraries.Game.Graphics.Color
+use Libraries.Game.InputMonitor
+use Libraries.Interface.Events.KeyboardEvent
+use Libraries.Interface.Events.KeyboardListener
+use Libraries.Game.Graphics.Camera
+
+class Main is Game
+InputMonitor monitor
+KeyboardEvent keys
+KeyboardListener listener
+Drawable Floor
+Drawable background
+Drawable sloperectangle
+Drawable slopetriangle
+Drawable platone
+Drawable plattwo
+Drawable platthree
+Drawable platfour
+Drawable platfive
+Drawable floor2
+Drawable floor3
+Drawable floor4
+Drawable barrier
+Drawable barrier2
+Drawable colorbarrier
+Drawable colorbarrier2
+Drawable colorbarrier3
+Drawable colorbarrier4
+Drawable colorbarrier5
+Drawable wall
+Drawable wall2
+Drawable start
+Drawable Kirby
+Color red
+Color blue
+Color green
+Camera camera=undefined
+
+number currentx = Kirby:GetGlobalX()
+number currenty = Kirby:GetGlobalY()
+number offset = 100
+number screenx = 685
+boolean center = false
+integer count = 0
+
+    action Main
+        SetScreenSize (5000,800)
+        StartGame()
+    end
+
+    action CreateGame
+        blue=blue:Cyan()
+        red=red:Red()
+        green=green:Green()
+
+        background:SetName ("Background")
+        background:SetPosition(0,0)
+        background:LoadFilledRectangle(3500,800,blue)
+
+        start:SetName("start")
+        start:SetCollidable(true)
+        start:SetPosition(0,1)
+        start:LoadFilledRectangle(800,60)
+        start:EnablePhysics(true)
+        start:SetUnmovable()
+
+        Floor:SetName("Floor")
+        Floor:SetCollidable (true)
+        Floor:SetPosition(1800,1)
+        Floor:LoadFilledRectangle(5000,60)
+        Floor:EnablePhysics(true)
+        Floor:SetUnmovable()
+
+        sloperectangle:SetName("sloperectnalge")
+        sloperectangle:SetCollidable(true)
+        sloperectangle:SetPosition(670,0)
+        sloperectangle:LoadFilledRectangle(200,205)
+        sloperectangle:EnablePhysics(true)
+
+        slopetriangle:SetName("sloperectangle")
+        slopetriangle:SetCollidable(true)
+        slopetriangle:SetPosition(300,0)
+        slopetriangle:LoadFilledTriangle(0,0,370,0,370,205)
+        slopetriangle:EnablePhysics(true)
+
+        platone:SetName("platone")
+        platone:SetCollidable(true)
+        platone:SetPosition(1050,185)
+        platone:LoadFilledRectangle(150,20,red)
+        platone:EnablePhysics(true)
+
+        plattwo:SetName("plattwo")
+        plattwo:SetCollidable(true)
+        plattwo:SetPosition(1430,185)
+        plattwo:LoadFilledRectangle(150,20,blue)
+        plattwo:EnablePhysics(true)
+
+        platthree:SetName("platthree")
+        platthree:SetCollidable(true)
+        platthree:SetPosition(2220,130)
+        platthree:LoadFilledRectangle(120,20,red)
+        platthree:EnablePhysics(true)
+
+        platfour:SetName("platfour")
+        platfour:SetCollidable(true)
+        platfour:SetPosition(2220,325)
+        platfour:LoadFilledRectangle(120,20,blue)
+        platfour:EnablePhysics(true)
+
+        platfive:SetName("platfive")
+        platfive:SetCollidable(true)
+        platfive:SetPosition(2220,520)
+        platfive:LoadFilledRectangle(120,20,green)
+        platfive:EnablePhysics(true)
+
+        floor2:SetName("floor2")
+        floor2:SetCollidable(true)
+        floor2:SetPosition(2400,180)
+        floor2:LoadFilledRectangle(800,40)
+        floor2:EnablePhysics(true)
+
+        barrier:SetName("barrier")
+        barrier:SetCollidable(true)
+        barrier:SetPosition(2750,0)
+        barrier:LoadFilledRectangle(50,180)
+        barrier:EnablePhysics(true)
+
+        floor3:SetName("floor3")
+        floor3:SetCollidable(true)
+        floor3:SetPosition(2400,375)
+        floor3:LoadFilledRectangle(800,40)
+        floor3:EnablePhysics(true)
+
+        barrier2:SetName("barrier2")
+        barrier2:SetCollidable(true)
+        barrier2:SetPosition(2650,375)
+        barrier2:LoadFilledRectangle(40,140)
+        barrier2:EnablePhysics(true)
+
+        colorbarrier:SetName("colorbarrier")
+        colorbarrier:SetCollidable(true)
+        colorbarrier:SetPosition(2663,515)
+        colorbarrier:LoadFilledRectangle(13,65,blue)
+        colorbarrier:EnablePhysics(true)
+
+        floor4:SetName("floor4")
+        floor4:SetCollidable(true)
+        floor4:SetPosition(2400,570)
+        floor4:LoadFilledRectangle(800,40)
+        floor4:EnablePhysics(true)
+
+        colorbarrier2:SetName("colorbarrier2")
+        colorbarrier2:SetCollidable(true)
+        colorbarrier2:SetPosition(2550,570)
+        colorbarrier2:LoadFilledRectangle(18,115,red)
+        colorbarrier2:EnablePhysics(true)
+
+        colorbarrier3:SetName("colorbarrier3")
+        colorbarrier3:SetCollidable(true)
+        colorbarrier3:SetPosition(2550,685)
+        colorbarrier3:LoadFilledRectangle(18,115,green)
+        colorbarrier3:EnablePhysics(true)
+
+        colorbarrier4:SetName("colorbarrier4")
+        colorbarrier4:SetCollidable(true)
+        colorbarrier4:SetPosition(2720,570)
+        colorbarrier4:LoadFilledRectangle(18,300,green)
+        colorbarrier4:EnablePhysics(true)
+
+        colorbarrier5:SetName("colorbarrier5")
+        colorbarrier5:SetCollidable(true)
+        colorbarrier5:SetPosition(2900,570)
+        colorbarrier5:LoadFilledRectangle(18,105,blue)
+        colorbarrier5:EnablePhysics(true)
+
+        wall:SetName("wall")
+        wall:SetCollidable(true)
+        wall:SetPosition(3800,0)
+        wall:LoadFilledRectangle(35,480)
+        wall:EnablePhysics(true)
+
+        wall2:SetName("wall2")
+        wall2:SetCollidable(true)
+        wall2:SetPosition(3620,150)
+        wall2:LoadFilledRectangle(35,330)
+        wall2:EnablePhysics(true)
+
+        Kirby:SetName("me")
+        Kirby:SetCollidable(true)
+        Kirby:Load("Kirby_Still.png")
+        Kirby:Scale(0.14)
+        Kirby:SetPosition(125,70)
+        Kirby:EnablePhysics(true)
+        Kirby:SetResponsive()
+
+        camera=GetCamera2D()
+        camera:SetPosition(screenx,400,0)
+
+        Add(background)
+        Add(Floor)
+        Add(start)
+        Add(sloperectangle)
+        Add(slopetriangle)
+        Add(platone)
+        Add(plattwo)
+        Add(platthree)
+        Add(platfour)
+        Add(platfive)
+        Add(floor2)
+        Add(barrier)
+        Add(barrier2)
+        Add(colorbarrier)
+        Add(colorbarrier2)
+        Add(colorbarrier3)
+        Add(colorbarrier4)
+        Add(colorbarrier5)
+        Add(floor3)
+        Add(floor4)
+        Add(wall)
+        Add(wall2)
+        Add(Kirby)
+    end
+
+    action Update(number seconds)
+        count = count+1
+        if count mod 500=166
+            background:LoadFilledRectangle(5000,800,red)
+        end
+        if count mod 500=0
+            background:LoadFilledRectangle(5000,800,blue)
+        end
+        if count mod 500=333
+            background:LoadFilledRectangle(5000,800,green)
+        end
+        currentx = Kirby:GetGlobalX()
+        currenty = Kirby:GetGlobalY()
+        if monitor:IsKeyPressed(keys:ESCAPE)
+            Exit()
+        end
+        if monitor:IsKeyPressed(keys:D)
+          Move(keys:D)
+        end
+        if monitor:IsKeyPressed(keys:A)
+          Move(keys:A)
+        end
+        if monitor:IsKeyPressed(keys:W)
+            Move(keys:W)
+        end
+        if monitor:IsKeyPressed(keys:S)
+            Move(keys:S)
+        end
+        colorbarrier5:MoveY(-1)
+    end
+
+    action Move(integer press)
+        if currentx >= 640
+            center = true
+        end
+        if press = keys:D
+            Kirby:SetPosition(currentx+5,currenty)
+            if center = true
+            screenx=screenx+3
+            camera:SetPosition(screenx,400,0)
+            end
+        elseif press = keys:A
+            Kirby:SetPosition(currentx-3,currenty)
+        if center = true
+            screenx=screenx-3
+            camera:SetPosition(screenx,400,0)
+        end
+        elseif press = keys:W
+            Kirby:SetPosition(currentx,currenty+3)
+        elseif press = keys:S
+            Kirby:SetPosition(currentx,currenty-3)
+     end
+    end
+end
